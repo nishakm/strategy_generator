@@ -1,4 +1,4 @@
-# Business Srategy Generator written in Go
+# Business Strategy Generator written in Go
 
 This was inspired by [a blog post by Simon Wardley](http://blog.gardeviance.org/2014/07/a-quick-route-to-building-strategy.html)
 
