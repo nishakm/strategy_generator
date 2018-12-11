@@ -12,8 +12,11 @@ package main
 // Import other golang packages here. Names are in ""
 import (
 	"fmt"
-
-	"github.com/nishakm/strategy_generator/pkg"
+/*
+If you either put the pkg in ~/go/src, or set GOPATH to include the parent dir,
+the relative form shoud work.  The relative form is generally preferred.
+*/
+	"strategy_generator/pkg"
 )
 
 // this is the main function
