@@ -12,7 +12,6 @@ package main
 // Import other golang packages here. Names are in ""
 import (
 	"fmt"
-
 	"github.com/nishakm/strategy_generator/pkg"
 )
 

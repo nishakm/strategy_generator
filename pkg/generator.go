@@ -12,7 +12,7 @@ import (
 // this is so we can access them directly
 type Statement struct {
 	Sentence string // the sentence to substitute a word in
-	WordType int    // 0 for noun and 1 for adjective (more word organization needed! Pull Requests accepted :)
+	Dictionary []string    // words that can be used.
 }
 
 // nouns is an array assignment with no specific limits
@@ -52,28 +52,38 @@ var adjectives = []string{
 	"sustainable",
 	"value added"}
 
-// Each statement has a %s which is for string substitution
+var adverbs = []string {
+	"competitively",
+	"creatively",
+	"effectively",
+	"independently",
+	"methodically",
+	"substantially",
+}
+
+// Each statement has a %v which is for string substitution
 // in Go there is no tuple substitution like python so the
 // whole statement needs to be divided in this way
 var statements = []Statement{
-	Statement{"Our strategy is %s. ", 1},
-	Statement{"We will lead a %s ", 1},
-	Statement{"effort of the market through our use of %s ", 0},
-	Statement{"and %s ", 0},
-	Statement{"to build a %s. ", 0},
-	Statement{"By being both %s ", 1},
-	Statement{"and %s, ", 1},
-	Statement{"our %s ", 1},
-	Statement{"approach will drive %s throughout the organization. ", 0},
-	Statement{"Synergies between our %s ", 0},
-	Statement{"and %s ", 0},
-	Statement{"will enable us to capture the upside by becoming %s ", 1},
-	Statement{"in a %s world. ", 0},
-	Statement{"These transformations combined with %s ", 0},
-	Statement{"due to our %s ", 0},
-	Statement{"will create a %s ", 0},
-	Statement{"through %s ", 0},
-	Statement{"and %s.", 0}}
+	Statement{"Our strategy is %v. ", adjectives},
+	Statement{"We will lead a %v ", adjectives},
+	Statement{"effort of the market through our use of %v ", nouns},
+	Statement{"and %v ", nouns},
+	Statement{"to build a %v. ", nouns},
+	Statement{"By being both %v ", adjectives},
+	Statement{"and %v, ", adjectives},
+	Statement{"our %v ", adjectives},
+	Statement{"approach will drive %v throughout the organization. ", nouns},
+	Statement{"Synergies between our %v ", nouns},
+	Statement{"and %v ", nouns},
+	Statement{"will enable us to %v ", adverbs},
+	Statement{"capture the upside by becoming %v ", adjectives},
+	Statement{"in a %v world. ", nouns},
+	Statement{"These transformations combined with %v ", nouns},
+	Statement{"due to our %v ", nouns},
+	Statement{"will create a %v ", nouns},
+	Statement{"through %v ", nouns},
+	Statement{"and %v.", nouns}}
 
 // Generate produces a random business statedgy statement.
 // Note: any of the functions called from the packages imported
@@ -89,22 +99,17 @@ func Generate() string {
 	// not available outside the function
 	statement := ""
 
-	// explicit unassigned variable
-	var word string
-
 	// rand uses a global package called Source
 	// https://golang.org/pkg/math/rand/#Source
 	// The source has to be initialized by some seed
-	// the seed needs to change every time a random number needs to
-	// be generated or else the same number will be generated
-	for i := 0; i < len(statements); i++ {
-		rand.Seed(time.Now().UnixNano())
-		if statements[i].WordType == 0 {
-			word = nouns[rand.Intn(len(nouns))]
-		} else { //like C else has to be right after the closing }
-			word = adjectives[rand.Intn(len(adjectives))]
-		}
-		statement = statement + fmt.Sprintf(statements[i].Sentence, word)
+	// the seed needs to change for each Generation
+	// or else the same sequence will be produced.
+	rand.Seed(time.Now().UnixNano())
+	for i := range statements {
+		s := statements[i]
+		RandIndex := rand.Intn(len(s.Dictionary))
+		word := s.Dictionary[RandIndex]
+		statement += fmt.Sprintf(s.Sentence, word)
 	}
 
 	return statement
